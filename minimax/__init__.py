@@ -2,61 +2,40 @@ import board_util
 from constants import EMPTY, PLAYER, COMPUTER, DEPTH   
 
 def evaluate(board):
-    for row in range(3) :      
-        if (board[row][0] == board[row][1] == board[row][2]) :         
-            if (board[row][0] == COMPUTER) : 
-                return 1
-            elif (board[row][0] == PLAYER) : 
-                return -1
-  
-    for col in range(3): 
-        if (board[0][col] == board[1][col] == board[2][col]): 
-          
-            if (board[0][col] == COMPUTER) :  
-                return 1
-            elif (board[0][col] == PLAYER) : 
-                return -1
-
-    if (board[0][0] == board[1][1] == board[2][2]) : 
-        if (board[0][0] == COMPUTER) : 
-            return 1
-        elif (board[0][0] == PLAYER) : 
-            return -1
-  
-    if (board[0][2] == board[1][1] == board[2][0]): 
-        if (board[0][2] == COMPUTER) : 
-            return 1
-        elif (board[0][2] == PLAYER) : 
-            return -1
+    if board_util.is_win(board, COMPUTER):
+        return 1
+    elif board_util.is_win(board, PLAYER):
+        return -1
+    elif board_util.is_board_full(board):
+        return 0
     return 0
 
-def Minimax(board, depth, isMaximazing):
+def Minimax(board, depth, isMaximizing):
     score = evaluate(board)
-
-    if score == 1 or score == -1:
+    
+    if board_util.is_board_full(board) or depth >= DEPTH:
         return score
     
-    #if depth >= DEPTH:
-    #    return score
-    
-    if isMaximazing:
+    if isMaximizing:
         best = -1000
         for i in range(3):
             for j in range(3):
                 if board[i][j] == EMPTY:
                     board[i][j] = COMPUTER
-                    best = max(best, Minimax(board, depth + 1, not isMaximazing))
+                    best = max(best, Minimax(board, depth + 1, False))
                     board[i][j] = EMPTY
+        return best
+
     else:
         best = 1000
         for i in range(3):
             for j in range(3):
                 if board[i][j] == EMPTY:
                     board[i][j] = PLAYER
-                    best = min(best, Minimax(board, depth + 1, not isMaximazing))
+                    best = min(best, Minimax(board, depth + 1, True))
                     board[i][j] = EMPTY
 
-    return best
+        return best
 
 def find_best_move(board):
     best_val = -1000

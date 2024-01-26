@@ -4,8 +4,8 @@ from constants import *
 pg.font.init()
 
 font = pg.font.SysFont("Consolas", GAP // 2)
-player_o = font.render(PLAYER, True, BLACK)
-computer_x = font.render(COMPUTER, True, BLACK)
+player_o = font.render(PLAYER, True, GREEN)
+computer_x = font.render(COMPUTER, True, RED)
 player_o_width = player_o.get_width()
 player_o_height = player_o.get_height()
 computer_x_widht = computer_x.get_width()
@@ -40,12 +40,11 @@ def draw_board(win, board):
 
 
 def is_win(board, sign):
-    n = len(board)
-    for i in range(n):
+    for i in range(3):
         if board[i][0] == board[i][1] == board[i][2] == sign:
             return True
-    for i in range(n):
-        if board[0][i] == board[1][i] == board[2][i] == sign:
+    for j in range(3):
+        if board[0][j] == board[1][j] == board[2][j] == sign:
             return True
     if board[0][0] == board[1][1] == board[2][2] == sign:
         return True
@@ -55,13 +54,12 @@ def is_win(board, sign):
     return False
 
 
-def is_tie(board):
-    flag = True
+def is_board_full(board):
     for i in range(3):
         for j in range(3):
             if board[i][j] == EMPTY:
-                flag = False
-    return flag
+                return False
+    return True
 
 
 def transverse(board):

@@ -4,11 +4,16 @@ from constants import *
 from random import choice
 import minimax
 pg.init()
+pg.font.init()
 
-
-window = pg.display.set_mode((WIDTH, WIDTH))
+window = pg.display.set_mode((WIDTH, HEIGHT))
 pg.display.set_caption("Tic-Tac-Toe")
 
+font = pg.font.SysFont("Consolas", (HEIGHT - WIDTH) * 3 // 7)
+
+ai_score = 0
+player_score = 0
+tie = 0
 is_players_turn = False
 board = board_util.board_init()
 
@@ -19,27 +24,38 @@ def computer_move(board):
         for j in range(len(board[0])):
             if board[i][j] == EMPTY:
                 possible_moves.append((i, j))
-#
+
     if len(possible_moves) == 9:
         r, c = choice(possible_moves)
     else:
         r, c = minimax.find_best_move(board)
+    #r, c = minimax.find_best_move(board)
 
     board[r][c] = COMPUTER
     is_players_turn = True
 
 
 def get_players_pos(x, y, is_players_turn):
-    if is_players_turn:
+    if 0 < x < WIDTH and 0 < y < WIDTH and is_players_turn:
         col = x // GAP
         row = y // GAP
         return row, col
     return None
 
+def draw_score(win):
+    ai = font.render(f"x : {ai_score}", True, RED)
+    player = font.render(f"o : {player_score}", True, GREEN)
+    tie_msg = font.render(f"tie : {tie}", True, BLACK)
+    space = GAP // 5
+    win.blit(ai, (space, WIDTH + (HEIGHT - WIDTH) // 2 - ai.get_height() // 2))
+    win.blit(player, (WIDTH - space - player.get_width(), WIDTH + (HEIGHT - WIDTH) // 2 - player.get_height() // 2))
+    win.blit(tie_msg, (WIDTH // 2 - tie_msg.get_width() // 2, WIDTH + (HEIGHT - WIDTH) // 2 - tie_msg.get_height() // 2))
+
+
 def draw_grid(win):
     for i in range(3):
         pg.draw.line(win, BLACK, (0, (i + 1) * GAP), (WIDTH, (i + 1) * GAP), width = 3)
-        pg.draw.line(win, BLACK, ((i + 1) * GAP, 0), ((i + 1) * GAP, HEIGHT), width = 3)
+        pg.draw.line(win, BLACK, ((i + 1) * GAP, 0), ((i + 1) * GAP, WIDTH), width = 3)
 
 def draw_line_after_winning(win, board):
     n = len(board)
@@ -60,10 +76,11 @@ def draw_line_after_winning(win, board):
 
 def draw(win, board):
     win.fill(WHITE)
-    pg.draw.rect(win, BLACK, (0,0, WIDTH, HEIGHT), 3)
+    pg.draw.rect(win, BLACK, (0,0, WIDTH, WIDTH), 3)
     draw_grid(win)
     board_util.draw_board(win, board)
     draw_line_after_winning(win, board)
+    draw_score(win)
     pg.display.update()
 
 run = True
@@ -89,17 +106,18 @@ while run:
         pg.time.wait(1000)
         board = board_util.board_init()
         is_players_turn = False
-        #print("O has won!")
+        player_score += 1
+
     elif board_util.is_win(board, COMPUTER):
         pg.time.wait(1000)
         board = board_util.board_init()
         is_players_turn = False
-        #print("X has won!")
-    elif board_util.is_tie(board):
+        ai_score += 1
+        
+    elif board_util.is_board_full(board):
         pg.time.wait(1000)
         board = board_util.board_init()
         is_players_turn = False
-        #print("its tie")
-
+        tie += 1
 
 pg.quit()
