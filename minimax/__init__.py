@@ -3,17 +3,41 @@ from constants import EMPTY, PLAYER, COMPUTER, DEPTH
 
 def evaluate(board):
     if board_util.is_win(board, COMPUTER):
-        return 1
-    elif board_util.is_win(board, PLAYER):
-        return -1
-    elif board_util.is_board_full(board):
-        return 0
+        return 10
+    if board_util.is_win(board, PLAYER):
+        return -10
+    
+    for row in board:
+        if row[0] == row[2] == COMPUTER:
+            return 5
+        if row[0] == row[2] == PLAYER:
+            return -5
+
+    temp_board = board_util.transverse(board)
+    for col in temp_board:
+        if col[0] == col[2] == COMPUTER:
+            return 5
+        if col[0] == col[2] == PLAYER:
+            return -5
+
+    for row in board:
+        if row.count(COMPUTER) == 2:
+            return 3
+        if row.count(PLAYER) == 2:
+            return -3
+    
+    for col in temp_board:
+        if col.count(COMPUTER) == 2:
+            return 3
+        if col.count(PLAYER) == 2:
+            return -3
+
     return 0
 
 def Minimax(board, depth, isMaximizing):
     score = evaluate(board)
     
-    if board_util.is_board_full(board) or depth >= DEPTH:
+    if board_util.is_win(board, COMPUTER) or board_util.is_win(board, PLAYER) or board_util.is_board_full(board) or depth > DEPTH:
         return score
     
     if isMaximizing:
@@ -51,5 +75,6 @@ def find_best_move(board):
                 if val > best_val:
                     best_val = val
                     move = (i, j)
+                    #print(best_val, move)
 
     return move
