@@ -19,7 +19,7 @@ board = board_util.board_init()
 
 def computer_move(board):
     global is_players_turn
-    #possible_moves = []
+    possible_moves = []
     #for i in range(len(board)):
     #    for j in range(len(board[0])):
     #        if board[i][j] == EMPTY:
@@ -61,32 +61,32 @@ def draw_line_after_winning(win, board):
     n = len(board)
     for i in range(n):
         if board[i][0] == board[i][1] == board[i][2] == PLAYER:
-            pg.draw.line(win, BLACK, (GAP // 4, i * GAP + GAP // 2), (WIDTH - GAP // 4, i * GAP + GAP // 2), 3)
+            pg.draw.line(win, GREEN, (GAP // 4, i * GAP + GAP // 2), (WIDTH - GAP // 4, i * GAP + GAP // 2), 3)
             return
     for i in range(n):
         if board[0][i] == board[1][i] == board[2][i] == PLAYER:
-            pg.draw.line(win, BLACK, (i * GAP + GAP // 2, GAP // 4), (i * GAP + GAP // 2, WIDTH - GAP // 4), 3)
+            pg.draw.line(win, GREEN, (i * GAP + GAP // 2, GAP // 4), (i * GAP + GAP // 2, WIDTH - GAP // 4), 3)
             return
     if board[0][0] == board[1][1] == board[2][2] and board[0][0] == PLAYER:
-        pg.draw.line(win, BLACK, (GAP // 4, GAP // 4), (WIDTH - GAP // 4, WIDTH - GAP // 4), 3)
+        pg.draw.line(win, GREEN, (GAP // 4, GAP // 4), (WIDTH - GAP // 4, WIDTH - GAP // 4), 3)
         return
     if board[0][2] == board[1][1] == board[2][0] and board[0][2] == PLAYER:
-        pg.draw.line(win, BLACK, (WIDTH - GAP // 4, GAP // 4), (GAP // 4, WIDTH - GAP // 4), 3)
+        pg.draw.line(win, GREEN, (WIDTH - GAP // 4, GAP // 4), (GAP // 4, WIDTH - GAP // 4), 3)
         return
     
     for i in range(n):
         if board[i][0] == board[i][1] == board[i][2] == COMPUTER:
-            pg.draw.line(win, BLACK, (GAP // 4, i * GAP + GAP // 2), (WIDTH - GAP // 4, i * GAP + GAP // 2), 3)
+            pg.draw.line(win, RED, (GAP // 4, i * GAP + GAP // 2), (WIDTH - GAP // 4, i * GAP + GAP // 2), 3)
             return
     for i in range(n):
         if board[0][i] == board[1][i] == board[2][i] == COMPUTER:
-            pg.draw.line(win, BLACK, (i * GAP + GAP // 2, GAP // 4), (i * GAP + GAP // 2, WIDTH - GAP // 4), 3)
+            pg.draw.line(win, RED, (i * GAP + GAP // 2, GAP // 4), (i * GAP + GAP // 2, WIDTH - GAP // 4), 3)
             return
     if board[0][0] == board[1][1] == board[2][2] and board[0][0] == COMPUTER:
-        pg.draw.line(win, BLACK, (GAP // 4, GAP // 4), (WIDTH - GAP // 4, WIDTH - GAP // 4), 3)
+        pg.draw.line(win, RED, (GAP // 4, GAP // 4), (WIDTH - GAP // 4, WIDTH - GAP // 4), 3)
         return
     if board[0][2] == board[1][1] == board[2][0] and board[0][2] == COMPUTER:
-        pg.draw.line(win, BLACK, (WIDTH - GAP // 4, GAP // 4), (GAP // 4, WIDTH - GAP // 4), 3)
+        pg.draw.line(win, RED, (WIDTH - GAP // 4, GAP // 4), (GAP // 4, WIDTH - GAP // 4), 3)
         return
 
 def draw(win, board):
