@@ -20,15 +20,11 @@ board = board_util.board_init()
 def computer_move(board):
     global is_players_turn
     possible_moves = []
-    #for i in range(len(board)):
-    #    for j in range(len(board[0])):
-    #        if board[i][j] == EMPTY:
-    #            possible_moves.append((i, j))
-#
-    #if len(possible_moves) == 9:
-    #    r, c = choice(possible_moves)
-    #else:
-    #    r, c = minimax.find_best_move(board)
+    for i in range(len(board)):
+        for j in range(len(board[0])):
+            if board[i][j] == EMPTY:
+                possible_moves.append((i, j))
+                
     r, c = minimax.find_best_move(board)
 
     board[r][c] = COMPUTER
